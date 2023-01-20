@@ -1,3 +1,6 @@
+body {
+    color: white;
+}
 
 .title {
     color: rgb(255, 255, 255);
@@ -26,8 +29,9 @@
 
 }
 
-h1 {
-    color: white;
+.card_item {
+    text-align: center;
+   
 }
 
 
