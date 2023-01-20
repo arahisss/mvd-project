@@ -98,7 +98,17 @@
     <section class="m-5">
       <div class="container">
         <h1 class="d-flex justify-content-center mb-5">Карта преступлений по регионам России</h1>
+        
+        
         <div id="map" style="width: 100%; height: 600px"></div>
+
+        <?php 
+          include "db.php";
+        
+          $select = mysqli_query($connect, "SELECT * FROM `subjects` WHERE `id`=1");
+          $name = mysqli_fetch_assoc($select);
+          echo $name['name'];
+        ?> 
 
       </div>
       
@@ -106,7 +116,8 @@
 
 
     <script src="https://api-maps.yandex.ru/2.1/?apikey=68af2958-e8f6-4a39-b236-1939f3b0f6c9&lang=ru_RU" type="text/javascript"></script>
-    <script src="main.js"></script>
+    <script src="main.js" type="text/javascript"></script>
+    <script src="data.js" type="text/javascript"></script>
 
 </body>
 </html>

@@ -3,115 +3,114 @@ ymaps.ready(init);
 
 
 function init() {
-    let myMap = new ymaps.Map("map", {
-        // Координаты центра карты.
-        // Порядок по умолчанию: «широта, долгота»..
-        center: [63.56156587483154, 104.12911707273814],
-        // Уровень масштабирования. Допустимые значения:
-        // от 0 (весь мир) до 19.
-        zoom: 3
-    }, {
-        searchControlProvider: 'yandex#search'
-    });
-
-    // Создаем многоугольник, используя класс GeoObject.
-    let myGeoObject = new ymaps.GeoObject({
-        // Описываем геометрию геообъекта.
-        geometry: {
-            // Тип геометрии - "Многоугольник".
-            type: "Polygon",
-            // Указываем координаты вершин многоугольника.
-            coordinates: [
-                // Координаты вершин внешнего контура.
-                [
-                    [52.5873886111,	54.5498665349],
-                    [52.6289278289,	54.5378600553],
-                    [52.6312920311,	54.5383468383],
-                    [52.6429048199,	54.5402641175],
-                    [52.654618141, 54.5414177789],
-                    [52.6663818359,	54.5418028824],
-                    [52.6733709239,	54.5416670418],
-                    [52.6947561168,	54.5408354377],
-                    [52.6995307238,	54.5405861749],
-                    [52.7112440448,	54.5394325135],
-                    [52.7118237993,	54.5393552282],
-                    [52.7571042558,	54.5332440832],
-                    [52.7619114749,	54.5325290332],
-                    [52.7721882693,	54.5308581958],
-                    [52.7784140846,	54.5297332519],
-                    [52.7872923375,	54.5277325001],
-                    [52.7987006447,	54.5258422607],
-                    [52.8101631736,	54.5231695738],
-                    [52.8123061792,	54.5225811438],
-                    [52.8300750391,	54.5175838904],
-                    [52.8391952182,	54.5147556706],
-                    [52.8470890389,	54.5118686832],
-                    [52.8684061414,	54.5035027053],
-                    [52.8685991531,	54.5034485295],
-                    [52.8778075839,	54.5005955144],
-                    [52.8860291637,	54.4975795261],
-                    [52.8905487061,	54.4976363175],
-                    [52.8997830621,	54.4973991121],
-                    [52.9106168024,	54.4968421663]
+    let map = new ymaps.Map('map', {
+        center: [65, 100],
+        zoom: 0,
+        type: null,
+        controls: ['zoomControl']
+    },{
+        restrictMapArea: [[10, 10], [85,-160]]
+    })
     
-                ],
-                // Координаты вершин внутреннего контура.
-                
-            ],
-            // Задаем правило заливки внутренних контуров по алгоритму "nonZero".
-            fillRule: "nonZero"
-        },
-        // Описываем свойства геообъекта.
-        properties:{
-            // Содержимое балуна.
-            balloonContent: "Многоугольник"
+    map.controls.get('zoomControl').options.set({size: 'small'});
+    // Добавим заливку цветом.
+    let pane = new ymaps.pane.StaticPane(map, {
+        zIndex: 100, css: {
+            width: '100%', height: '100%', backgroundColor: '#f7f7f7'
         }
-    }, {
-        // Описываем опции геообъекта.
-        // Цвет заливки.
-        fillColor: '#00FF00',
-        // Цвет обводки.
-        strokeColor: '#0000FF',
-        // Общая прозрачность (как для заливки, так и для обводки).
-        opacity: 0.5,
-        // Ширина обводки.
-        strokeWidth: 5,
-        // Стиль обводки.
-        strokeStyle: 'shortdash'
     });
+    map.panes.append('white', pane);
+    // Зададим цвета федеральных округов.
+    let districtColors = {
+        cfo: '#ffff6f',
+        szfo: '#54cbba',
+        yfo: '#f9768e',
+        skfo: '#9a5597',
+        pfo: '#30cb05',
+        urfo: '#bac1cc',
+        sfo: '#16acdb',
+        dfo: '#fbc520'
+    };
+    // Зададим подсказки при наведении на федеральный округ.
+    let districtsHints = {
+        cfo: 'ЦФО',
+        szfo: 'СЗФО',
+        yfo: 'ЮФО',
+        skfo: 'СКФО',
+        pfo: 'ПФО',
+        urfo: 'УрФО',
+        sfo: 'СФО',
+        dfo: 'ДФО'
+    };
+    // Создадим балун.
+    let districtBalloon = new ymaps.Balloon(map);
+    districtBalloon.options.setParent(map.options);
+    // Загрузим регионы.
+    ymaps.borders.load('RU', {
+        lang: 'ru',
+        quality: 2
+    }).then(function (result) {
+        // Создадим объект, в котором будут храниться коллекции с нашими регионами.
+        let districtCollections = {};
+        // Для каждого федерального округа создадим коллекцию.
+        for (let district in districtColors) {
+            districtCollections[district] = new ymaps.GeoObjectCollection(null, {
+                fillColor: districtColors[district],
+                strokeColor: districtColors[district],
+                strokeOpacity: 0.3,
+                fillOpacity: 0.3,
+                hintCloseTimeout: 0,
+                hintOpenTimeout: 0
+            });
+            // Создадим свойство в коллекции, которое позже наполним названиями субъектов РФ.
+            districtCollections[district].properties.districts = [];
+        }
 
-    // Добавляем многоугольник на карту.
-    myMap.geoObjects.add(myGeoObject);
+        result.features.forEach(function (feature) {
+            let iso = feature.properties.iso3166;
+            let name = feature.properties.name;
+            let district = districtByIso[iso];
+            // Для каждого субъекта РФ зададим подсказку с названием федерального округа, которому он принадлежит.
+            feature.properties.hintContent = districtsHints[district];
+            // Добавим субъект РФ в соответствующую коллекцию.
+            districtCollections[district].add(new ymaps.GeoObject(feature));
+            // Добавим имя субъекта РФ в массив.
+            districtCollections[district].properties.districts.push(name);
 
-    // // Создаем многоугольник, используя вспомогательный класс Polygon.
-    // let myPolygon = new ymaps.Polygon([
-    //     // Указываем координаты вершин многоугольника.
-    //     // Координаты вершин внешнего контура.
-    //     [
-    //         [55.75, 37.50],
-    //         [55.80, 37.60],
-    //         [55.75, 37.70],
-    //         [55.70, 37.70],
-    //         [55.70, 37.50]
-    //     ],
-    //     // Координаты вершин внутреннего контура.
-    //     [
-    //         [55.75, 37.52],
-    //         [55.75, 37.68],
-    //         [55.65, 37.60]
-    //     ]
-    // ], {
-    //     // Описываем свойства геообъекта.
-    //     // Содержимое балуна.
-    //     hintContent: "Многоугольник"
-    // }, {
-    //     // Задаем опции геообъекта.
-    //     // Цвет заливки.
-    //     fillColor: '#00FF0088',
-    //     // Ширина обводки.
-    //     strokeWidth: 5
-    // });
-
-    // // Добавляем многоугольник на карту.
-    // myMap.geoObjects.add(myPolygon);
+        });
+        // Создадим переменную, в которую будем сохранять выделенный в данный момент федеральный округ.
+        let highlightedDistrict;
+        for (let districtName in districtCollections) {
+            // Добавим коллекцию на карту.
+            map.geoObjects.add(districtCollections[districtName]);
+            // При наведении курсора мыши будем выделять федеральный округ.
+            districtCollections[districtName].events.add('mouseenter', function (event) {
+                let district = event.get('target').getParent();
+                district.options.set({fillOpacity: 1});
+            });
+            // При выводе курсора за пределы объекта вернем опции по умолчанию.
+            districtCollections[districtName].events.add('mouseleave', function (event) {
+                let district = event.get('target').getParent();
+                if (district !== highlightedDistrict) {
+                    district.options.set({fillOpacity: 0.3});
+                }
+            });
+            // Подпишемся на событие клика.
+            districtCollections[districtName].events.add('click', function (event) {
+                let target = event.get('target');
+                let district = target.getParent();
+                // Если на карте выделен федеральный округ, то мы снимаем с него выделение.
+                if (highlightedDistrict) {
+                    highlightedDistrict.options.set({fillOpacity: 0.3})
+                }
+                // Откроем балун в точке клика. В балуне будут перечислены регионы того федерального округа,
+                // по которому кликнул пользователь.
+                districtBalloon.open(event.get('coords'), district.properties.districts.join('<br>'));
+                // Выделим федеральный округ.
+                district.options.set({fillOpacity: 1});
+                // Сохраним ссылку на выделенный федеральный округ.
+                highlightedDistrict = district;
+            });
+        }
+    })
 }
