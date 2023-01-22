@@ -1,16 +1,18 @@
 ymaps.ready(init);
 
-
-
 function init() {
     let map = new ymaps.Map('map', {
         center: [65, 100],
         zoom: 0,
         type: null,
-        controls: ['zoomControl']
+        controls: ['zoomControl'],
+       
     },{
-        restrictMapArea: [[10, 10], [85,-160]]
+        restrictMapArea: [[10, 10], [85,-160]],
+        searchControlProvider: 'yandex#search'
     })
+
+    ////////////////////////////////////////////////////////////////////////////////////////////
     
     map.controls.get('zoomControl').options.set({size: 'small'});
     // Добавим заливку цветом.
@@ -45,6 +47,28 @@ function init() {
     // Создадим балун.
     let districtBalloon = new ymaps.Balloon(map);
     districtBalloon.options.setParent(map.options);
+
+    let crimes = {
+        cfo: '',
+        szfo: '',
+        yfo: '',
+        skfo: '',
+        pfo: '',
+        urfo: '',
+        sfo: '',
+        dfo: ''
+
+    };
+
+    // data.forEach(
+    //     element => console.log(element)
+    // );
+
+    for (let i = 0; i < data.length; i++) {
+        crimes[data[i].iso] = data[i].value;
+    }
+
+
     // Загрузим регионы.
     ymaps.borders.load('RU', {
         lang: 'ru',
@@ -95,6 +119,11 @@ function init() {
                     district.options.set({fillOpacity: 0.3});
                 }
             });
+
+            
+
+            
+
             // Подпишемся на событие клика.
             districtCollections[districtName].events.add('click', function (event) {
                 let target = event.get('target');
@@ -105,7 +134,9 @@ function init() {
                 }
                 // Откроем балун в точке клика. В балуне будут перечислены регионы того федерального округа,
                 // по которому кликнул пользователь.
-                districtBalloon.open(event.get('coords'), district.properties.districts.join('<br>'));
+                // district.properties.districts.join('<br>')
+                districtBalloon.open(event.get('coords'), "Всего преступлений: " + crimes[districtName]);
+                
                 // Выделим федеральный округ.
                 district.options.set({fillOpacity: 1});
                 // Сохраним ссылку на выделенный федеральный округ.

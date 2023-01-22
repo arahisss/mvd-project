@@ -101,21 +101,41 @@
         
         
         <div id="map" style="width: 100%; height: 600px"></div>
-
-        <?php 
-          include "db.php";
         
-          $select = mysqli_query($connect, "SELECT * FROM `subjects` WHERE `id`=1");
-          $name = mysqli_fetch_assoc($select);
-          echo $name['name'];
-        ?> 
+        <!-- <div class="json" data-attr=""></div> -->
 
+        <button id="set-balloon-header" class="btn">Задать заголовок балуна</button>
+        <button id="set-balloon-content" class="btn">Задать содержимое балуна</button>
+
+        
       </div>
       
     </section>
 
+    <?php require "result.php"?>
+    <script>
+      // получаем json из базы данных
+      let data = <?=$data?>;
+      //  console.log(data['yfo']);
+      // $.ajax({
+      //     url:'/result.php',
+      //     async: false,
+      //     data: ,
+      //     success: function(data) {
+      //         regions = JSON.parse(data);
+      //     }
+      // });
+    
+   
+
+      
+
+      // console.log(data.subject == 'Центральный фед.округ');
+    </script>
+
 
     <script src="https://api-maps.yandex.ru/2.1/?apikey=68af2958-e8f6-4a39-b236-1939f3b0f6c9&lang=ru_RU" type="text/javascript"></script>
+    <script src="https://yandex.st/jquery/2.2.3/jquery.min.js" type="text/javascript"></script>
     <script src="main.js" type="text/javascript"></script>
     <script src="data.js" type="text/javascript"></script>
 
