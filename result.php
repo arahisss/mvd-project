@@ -1,7 +1,7 @@
 <?php 
 include "db.php";
 
-$select = mysqli_query($connect, "SELECT * FROM `crimes` WHERE factor_id = 1 AND `subject` LIKE '%округ'");
+$select = mysqli_query($connect, "SELECT * FROM `crimes` WHERE `subject` LIKE '%округ'");
 $data_result = [];
 
 while($result = mysqli_fetch_assoc($select)) {

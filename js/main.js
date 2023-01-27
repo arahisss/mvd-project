@@ -49,14 +49,14 @@ function init() {
     districtBalloon.options.setParent(map.options);
 
     let crimes = {
-        cfo: '',
-        szfo: '',
-        yfo: '',
-        skfo: '',
-        pfo: '',
-        urfo: '',
-        sfo: '',
-        dfo: ''
+        cfo: {},
+        szfo: {},
+        yfo: {},
+        skfo: {},
+        pfo: {},
+        urfo: {},
+        sfo: {},
+        dfo: {}
 
     };
 
@@ -64,9 +64,17 @@ function init() {
     //     element => console.log(element)
     // );
 
+    // заполнение массива crimes данными из json
     for (let i = 0; i < data.length; i++) {
-        crimes[data[i].iso] = data[i].value;
+        crimes[data[i].iso][data[i].factor_id] = data[i].value;
+
+        if (crimes[data[i].iso]['subject'] == null) {
+            crimes[data[i].iso]['subject'] = data[i].subject;
+        }
+       
     }
+
+    console.log(crimes);
 
 
     // Загрузим регионы.
@@ -121,9 +129,6 @@ function init() {
             });
 
             
-
-            
-
             // Подпишемся на событие клика.
             districtCollections[districtName].events.add('click', function (event) {
                 let target = event.get('target');
@@ -134,8 +139,39 @@ function init() {
                 }
                 // Откроем балун в точке клика. В балуне будут перечислены регионы того федерального округа,
                 // по которому кликнул пользователь.
-                // district.properties.districts.join('<br>')
-                districtBalloon.open(event.get('coords'), "Всего преступлений: " + crimes[districtName]);
+                district.properties.districts.join('<br>')
+                districtBalloon.open(event.get('coords'), '<h3  class="balloon_title m-1">' + crimes[districtName]['subject'] + '</h3>' +
+                '<table class="balloon">' +
+                    '<tr><th>Зарегистрированных</th><th>Расследованных</th></tr>' +
+                    '<tr><td>Всего преступлений: ' + '<span>' + crimes[districtName][1] + '</span>' + '</td>' +
+                    '<td>' + '<span>' + crimes[districtName][4] + '</span>' +'</td></tr>' +
+                    '<tr><td>Тяжких и особо тяжких: ' + '<span>' + crimes[districtName][1] + '</span>' + '</td>' +
+                    '<td>' + '<span>' + crimes[districtName][5] + '</span>' +'</td></tr>' +
+                    '<tr><td>Экономических: ' + '<span>' + crimes[districtName][1] + '</span>' + '</td>' +
+                    '<td>' + '<span>' + crimes[districtName][6] + '</span>' +'</td></tr>' +
+                '</table>');
+
+                // '<h3  class="balloon_title m-1">' + crimes[districtName]['subject'] + '</h3>' +
+                // '<table>' +
+                //     '<tr><th></th><th>Расследованных</th></tr>' +
+                //     '<tr><td>Всего преступлений:'  + crimes[districtName][1] + '</td><td>' + crimes[districtName][4] +'</td></tr>' +
+                //     '<tr><td>Тяжких и особо тяжких:'  + crimes[districtName][1] + '</td><td>' + crimes[districtName][5] +'</td></tr>' +
+                //     '<tr><td>Экономических:' + crimes[districtName][1] + '</td><td>' + crimes[districtName][6] +'</td></tr>' 
+                // '</table>'
+
+                // districtBalloon.open(event.get('coords'), {
+                //     // Зададим содержимое заголовка балуна.
+                //     balloonContentHeader: '<a href = "#">Рога и копыта</a><br>' +
+                //         '<span class="description">Сеть кинотеатров</span>',
+                //     // Зададим содержимое основной части балуна.
+                //     balloonContentBody: '<img src="img/cinema.jpg" height="150" width="200"> <br/> ' +
+                //         '<a href="tel:+7-123-456-78-90">+7 (123) 456-78-90</a><br/>' +
+                //         '<b>Ближайшие сеансы</b> <br/> Сеансов нет.',
+                //     // Зададим содержимое нижней части балуна.
+                //     balloonContentFooter: 'Информация предоставлена:<br/>OOO "Рога и копыта"',
+                //     // Зададим содержимое всплывающей подсказки.
+                //     hintContent: 'Рога и копыта'
+                // });
                 
                 // Выделим федеральный округ.
                 district.options.set({fillOpacity: 1});

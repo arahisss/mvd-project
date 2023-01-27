@@ -42,13 +42,75 @@ body {
     right: 5px;
     top: 1px;
 }
-.btn {
-    margin-top: 10px;
+
+
+.balloon {
+    /* display: flex; */
+    /* justify-content: space-between; */
+    font-size: 15px;
+}
+
+td span {
+    color: rgb(255, 115, 0);
+}
+
+
+.balloon_title {
+    font-size: 20px;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
 }
 
 
 
 
+td {
+    border: 1px solid black;
+    padding: 5px;
+}
+
+.left_side {
+    display: flex;
+    flex-direction: column;
+    border-right: 2px solid black;
+}
+
+.right_side {
+    display: flex;
+    flex-direction: column;
+}
+
+.ballon_item {
+    display: flex;
+}
+
+
+.form-block {
+    flex-direction: column;
+    justify-content: center;
+    
+}
+
+.form-block h1, button {
+    display: flex;
+    justify-content: center;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    /* text-align: center; */
+
+    justify-content: center;
+}
+
+.login-btn {
+    display: flex; 
+    justify-content: center;
+    text-align: center;
+}
 
 
 
