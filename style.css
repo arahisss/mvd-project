@@ -114,6 +114,15 @@ td {
     
 }
 
+.section_crime {
+    /* display: flex;
+    justify-content: center;
+    flex-direction: column;
+    flex-wrap: wrap; */
+    text-align: center;
+}
+
+
 .customControl span {
     display: flex;
     padding: 3% 5%;
@@ -136,10 +145,5 @@ td {
     background-color: #FF0000;
 }
 
-.section2 {
-    display: flex;
-    flex-direction: column;
-    color: black;
-}
 
 

@@ -20,7 +20,7 @@
             </a>
     
             <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-              <li><a href="home.php" class="nav-link px-2 text-secondary">Главная</a></li>
+              <li><a href="home.php" class="nav-link px-2 text-white">Главная</a></li>
               <li><a href="#" class="nav-link px-2 text-white">О проекте</a></li>
               <li><a href="#" class="nav-link px-2 text-white">Контакты</a></li>
             </ul>

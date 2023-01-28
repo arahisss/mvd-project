@@ -14,7 +14,7 @@ include("check_auth.php");
     <h1 class="home-title mb-3">Карта преступности по субъектам России</h1>
 <!-- Состояние преступности и результаты расследования преступлений по регионам россии -->
 <!-- <img class="main_img img-fluid" src="img/icon_mvd.jpg" alt="МВД"> -->
-    <div id="map" class="my-3" style="width: 100%; height: 600px"></div>
+    <div id="map" class="my-4" style="width: 100%; height: 600px"></div>
     <?php include("get_city.php");?>
     <script>
       // получаем json из базы данных
@@ -27,3 +27,5 @@ include("check_auth.php");
 <script src="https://yandex.st/jquery/2.2.3/jquery.min.js" type="text/javascript"></script>
 <script src="js/cityMap.js" type="text/javascript"></script>
 <script src="js/city.js" type="text/javascript"></script>
+
+<?php require("footer.php"); ?>

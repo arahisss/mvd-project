@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -20,10 +20,11 @@
             </a>
     
             <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-              <li><a href="index.php" class="nav-link px-2 text-secondary">Главная</a></li>
+              <li><a href="index.php" class="nav-link px-2 text-white">Главная</a></li>
               <li><a href="#" class="nav-link px-2 text-white">О проекте</a></li>
               <li><a href="#" class="nav-link px-2 text-white">Контакты</a></li>
             </ul>
+    
     
             <div class="text-end mt-0">
               <a href="login.php"><button type="button" class="btn btn-outline-light me-2">Вход</button></a>
@@ -34,5 +35,4 @@
     </header>
 
 
-</body>
-</html>
+    

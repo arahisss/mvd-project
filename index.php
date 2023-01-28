@@ -6,12 +6,14 @@
         <img class="main_img img-fluid" src="img/icon_mvd.jpg" alt="МВД">
     </section>
 
-    <section class="m-5">
-        <div class="container section2">
-            <h1>Cover your page.</h1>
-            <p class="lead">Cover is a one-page template for building simple and beautiful home pages. Download, edit the text, and add your own fullscreen background photo to make it your own.</p>
+    <section style="padding:10% 0;" class="m-5 d-flex h-100 text-center">
+        <div class="container section_crime d-flex w-100 h-100 p-3 mx-auto flex-column">
+            <h1 style="font-weight: 300;">С января по ноябрь 2022 года в России </br> было зарегистрированно <span style="color: #FF6347">1823348</span> преступлений</h1>
+            <h1 style="font-weight: 300;" class="my-2">Из них было расследованно <span style="color: #FF6347">953244</span></h1>
+            
+
             <p class="lead">
-              <a href="#" class="btn btn-lg btn-light fw-bold border-white bg-white">Learn more</a>
+              <a href="login.php" class="btn btn-lg btn-light fw-bold border-white bg-white mt-5">Проверь свой город</a>
             </p>
         </div>
         
@@ -42,7 +44,7 @@
         <h1 class="d-flex justify-content-center mb-5">Карта преступлений по регионам России</h1>
         
         
-        <div id="map" style="width: 100%; height: 600px"></div>
+        <div id="map" style="width: 100%; height: 600px;"></div>
         
         <!-- <div class="json" data-attr=""></div> -->
 
@@ -64,3 +66,4 @@
     <script src="js/main.js" type="text/javascript"></script>
     <script src="js/data.js" type="text/javascript"></script>
 
+    <?php require("footer.php"); ?>

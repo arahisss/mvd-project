@@ -16,7 +16,7 @@ function init() {
     // Добавим заливку цветом.
     let pane = new ymaps.pane.StaticPane(map, {
         zIndex: 100, css: {
-            width: '100%', height: '100%', backgroundColor: '#f7f7f7'
+            width: '100%', height: '100%', backgroundColor: '#212529'
         }
     });
     map.panes.append('white', pane);
