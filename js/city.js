@@ -1,5 +1,5 @@
 // Данные взяты из: https://ru.wikipedia.org/wiki/Население_субъектов_Российской_Федерации
-var populationData = {
+var cityData = {
     "RU-BA": {"population": 4063293, "percent": 2.77},
     "RU-TA": {"population": 3894284, "percent": 2.65},
     "RU-DA": {"population": 3063885, "percent": 2.09},

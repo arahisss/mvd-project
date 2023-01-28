@@ -22,7 +22,7 @@ if (!empty($_POST)) {
 ?>
 
   <div class="container w-25">
-    <div class="d-flex justify-content-center form-block" style="margin-top:40%;">
+    <div class="d-flex justify-content-center form-block" style="margin-top:30%;">
       <h1 class="mb-3">Вход</h1>
 
       <form method="POST" class="login-form" action="">

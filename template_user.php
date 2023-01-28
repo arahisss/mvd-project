@@ -25,10 +25,6 @@
               <li><a href="#" class="nav-link px-2 text-white">Контакты</a></li>
             </ul>
     
-            <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
-              <input type="search" class="form-control form-control-dark text-bg-dark" placeholder="Search..." aria-label="Search">
-            </form>
-    
             <div class="text-end mt-0">
               <!-- <a href="login.php"><button type="button" class="btn btn-outline-light me-2">Вход</button></a> -->
               <a href="logout.php"><button type="button" class="btn btn-warning">Выход</button></a>

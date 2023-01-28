@@ -4,11 +4,11 @@ function init() {
 
     var map = new ymaps.Map('map', {
         center: [68, 100],
-        zoom: 2,
+        zoom: 3,
         type: null,
         controls: ['zoomControl']
     },{
-        restrictMapArea: [[10, 10], [85,-160]]
+        // restrictMapArea: [[10, 10], [85,-160]]
     });
     map.controls.get('zoomControl').options.set({size: 'small'});
 
@@ -16,19 +16,28 @@ function init() {
     var pane = new ymaps.pane.StaticPane(map, {
         zIndex: 100,
         css: {
-            width: '100%', height: '100%', backgroundColor: '#f7f7f7'
+            width: '100%', height: '100%', backgroundColor: '#212529'
         }
     });
     map.panes.append('background', pane);
+
+    for (let i = 0; i < data.length; i++) {
+        if (cityData[data[i].iso]) {
+            cityData[data[i].iso]["crimes"] = Number(data[i].value);
+        }
+      
+    }
+
+    console.log(cityData);
+
     // Каждый регион мы будем относить к одной из 4-x групп
-    // в зависимости от населения, проживающего на его территории.
-    var percents = [0.3, 1.0, 2.0, 15];
+    var crimes = [10000, 25000, 40000, 130000];
     // Зададим изображения, которые будут использоваться для этих групп.
     var images = [
-        'images/1.png',
-        'images/2.png',
-        'images/3.png',
-        'images/4.png'
+        '#FFA07A',
+        '#FF8C00',
+        '#FF6347',
+        '#FF0000'
     ];
     var objectManager = new ymaps.ObjectManager();
     // Загрузим регионы.
@@ -43,14 +52,14 @@ function init() {
             feature.id = iso;
             // Получим процент населения, проживающего на данной территории.
             // Данные лежат в файле data.js.
-            var population = populationData[iso].percent;
+            var crime = cityData[iso].crimes;
             // Зададим изображение в зависимости от количества проживающего населения.
-            for (var i = 0; i < percents.length; i++) {
-                if (population < percents[i]) {
+            for (var i = 0; i < crimes.length; i++) {
+                if (crime < crimes[i]) {
                     feature.options = {
-                        fillImageHref: images[i],
+                        // fillImageHref: images[i],
                         fillMethod: 'tile',
-                        fillColor: '#ffffff'
+                        fillColor: images[i]
                     };
                     break;
                 }
@@ -60,4 +69,40 @@ function init() {
         objectManager.add(result);
         map.geoObjects.add(objectManager);
     })
+
+    // Создаем собственный класс.
+    CustomControlClass = function (options) {
+        CustomControlClass.superclass.constructor.call(this, options);
+        this._$content = null;
+        this._geocoderDeferred = null;
+    };
+    // И наследуем его от collection.Item.
+    ymaps.util.augment(CustomControlClass, ymaps.collection.Item, {
+    onAddToMap: function (map) {
+        CustomControlClass.superclass.onAddToMap.call(this, map);
+        this._lastCenter = null;
+        this.getParent().getChildElement(this).then(this._onGetChildElement, this);
+    },
+
+    _onGetChildElement: function (parentDomContainer) {
+        // Создаем HTML-элемент с текстом.
+        this._$content = $('<div class="customControl"><span id="color1">< 10000</span>' +
+        '<span id="color2">< 25000</span>' +
+        '<span id="color3">< 40000</span>' +
+        '<span id="color4">> 40000</span>' +
+
+        '</div>').appendTo(parentDomContainer);
+       
+    },
+
+    });
+
+    var customControl = new CustomControlClass();
+    map.controls.add(customControl, {
+        float: 'none',
+        position: {
+            top: 10,
+            left: 10
+        }
+    });
 }

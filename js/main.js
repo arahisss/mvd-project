@@ -3,16 +3,14 @@ ymaps.ready(init);
 function init() {
     let map = new ymaps.Map('map', {
         center: [65, 100],
-        zoom: 0,
+        zoom: 3,
         type: null,
         controls: ['zoomControl'],
        
     },{
-        restrictMapArea: [[10, 10], [85,-160]],
+        // restrictMapArea: [[10, 10], [85,-160]],
         searchControlProvider: 'yandex#search'
     })
-
-    ////////////////////////////////////////////////////////////////////////////////////////////
     
     map.controls.get('zoomControl').options.set({size: 'small'});
     // Добавим заливку цветом.
